@@ -1,4 +1,4 @@
-package net.javaproject.skillsharingapplication.model;
+package net.javaproject.skillsharingapplication.response;
 
 public class ErrorResponse {
     private String error;

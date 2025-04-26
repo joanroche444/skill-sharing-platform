@@ -1,0 +1,4 @@
+spring.application.name=skillsharingapplication
+server.port=8080
+spring.data.mongodb.uri=mongodb+srv://joanroche1604:o4HMNklN8mfozRYk@cluster0.gswdx.mongodb.net/skills
+

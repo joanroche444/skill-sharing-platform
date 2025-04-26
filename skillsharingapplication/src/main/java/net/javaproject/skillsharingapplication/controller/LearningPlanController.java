@@ -45,8 +45,8 @@ public class LearningPlanController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLearningPlan(@PathVariable String id) {
+    public ResponseEntity<String> deleteLearningPlan(@PathVariable String id) {
         learningPlanService.deleteLearningPlan(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Learning plan deleted successfully!");
     }
 }

@@ -28,22 +28,22 @@ public class UserController {
         return service.getAllUsers();
     }
 
-    @GetMapping("/{uid}")
-    public ResponseEntity<User> getUser(@PathVariable String uid) {
-        return service.getUserById(uid)
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable String id) {
+        return service.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/update/{uid}")
-    public ResponseEntity<User> updateUser(@PathVariable String uid, @RequestBody User updatedUser) {
-        updatedUser.setUid(uid);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User updatedUser) {
+        updatedUser.setId(id);
         return ResponseEntity.ok(service.saveUser(updatedUser));
     }
 
-    @DeleteMapping("/delete/{uid}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String uid) {
-        service.deleteUser(uid);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }

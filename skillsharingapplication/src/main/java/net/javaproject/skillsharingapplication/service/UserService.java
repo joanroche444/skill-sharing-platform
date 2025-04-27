@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import net.javaproject.skillsharingapplication.model.User;
@@ -16,11 +17,15 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+     @Autowired
+        private PasswordEncoder passwordEncoder;
+
 
 
     public User saveUser(User user) {
 
-
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+     user.setPassword(hashedPassword);
         return repo.save(user);
     }
 
@@ -28,11 +33,11 @@ public class UserService {
         return repo.findAll();
     }
 
-    public Optional<User> getUserById(String uid) {
-        return repo.findById(uid);
+    public Optional<User> getUserById(String id) {
+        return repo.findById(id);
     }
 
-    public void deleteUser(String uid) {
-        repo.deleteById(uid);
+    public void deleteUser(String id) {
+        repo.deleteById(id);
     }
 }

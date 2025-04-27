@@ -26,6 +26,6 @@ public class Post {
 
     private String createdBy; // Username or user id
 
-    private Long createdAt;   // Timestamp (epoch time)
+    private Long createdAt;   // Timestamp
 
 }

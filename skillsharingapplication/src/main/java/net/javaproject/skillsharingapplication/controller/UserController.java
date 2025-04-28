@@ -9,6 +9,7 @@ import net.javaproject.skillsharingapplication.model.User;
 import net.javaproject.skillsharingapplication.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,7 +20,16 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+
+        // Check if the user already exists based on email 
+        Optional<User> existingUser = service.findUserByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            return ResponseEntity
+                    .status(409) // Conflict
+                    .body("Error: Email already exists. Please use a different email.");
+        }
+    
         return ResponseEntity.ok(service.saveUser(user));
     }
 

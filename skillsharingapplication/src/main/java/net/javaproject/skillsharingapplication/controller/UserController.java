@@ -5,6 +5,7 @@ import net.javaproject.skillsharingapplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173") // Allow requests from this origin
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

@@ -32,22 +32,55 @@ export default function CreateProgressUpdate() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10">
-      <h2 className="text-xl font-bold mb-4">Post Progress Update</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <select value={selectedPlan} onChange={e => setSelectedPlan(e.target.value)} className="border p-2 w-full">
-          <option value="">Select Learning Plan</option>
-          {plans.map(plan => <option key={plan.id} value={plan.id}>{plan.title}</option>)}
-        </select>
-        <select value={title} onChange={e => setTitle(e.target.value)} className="border p-2 w-full">
-          <option value="">Select Template</option>
-          <option value="Completed Tutorial">Completed Tutorial</option>
-          <option value="Learned New Skill">Learned New Skill</option>
-          <option value="Finished Task">Finished Task</option>
-        </select>
-        <textarea value={description} onChange={e => setDescription(e.target.value)} className="border p-2 w-full" placeholder="Describe your progress..." />
-        <button className="bg-green-500 text-white p-2 rounded" type="submit">Submit Update</button>
-      </form>
+    
+    <div className="py-10 flex justify-center px-7">
+      <div className="w-full max-w-xl">
+        <h2 className="text-3xl font-bold text-center  mb-6">Post Progress Update</h2>
+        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full space-y-5">
+          
+          <select
+            value={selectedPlan}
+            onChange={(e) => setSelectedPlan(e.target.value)}
+            className="border border-gray-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="">Select Learning Plan</option>
+            {plans.map((plan) => (
+              <option key={plan.id} value={plan.id}>
+                {plan.title}
+              </option>
+            ))}
+          </select>
+  
+          <select
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border border-gray-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="">Select Template</option>
+            <option value="Completed Tutorial">Completed Tutorial</option>
+            <option value="Learned New Skill">Learned New Skill</option>
+            <option value="Finished Task">Finished Task</option>
+          </select>
+  
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="border border-gray-300 p-3 w-full rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+            rows="4"
+            placeholder="Describe your progress..."
+          />
+  
+          <div className="text-center pt-4">
+            <button
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition"
+              type="submit"
+            >
+              Submit Update
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
+  
 }

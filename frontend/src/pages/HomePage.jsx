@@ -553,3 +553,5 @@ import { Search, User, Bell, BookOpen, Share2, TrendingUp, Menu, X, LogIn } from
 }
 
 export default HomePage;
+
+

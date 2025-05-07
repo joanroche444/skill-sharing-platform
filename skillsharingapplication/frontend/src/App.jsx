@@ -11,8 +11,8 @@ import './index.css';
 export default function App() {
   return (
     <Router>
-      <nav className="bg-gray-800 text-white py-4 shadow-md">
-  <div className="container mx-auto flex justify-center space-x-8">
+      <nav className="sticky top-0 z-50 bg-gray-700 text-white shadow-md">
+  <div className="container mx-auto flex justify-center space-x-8 py-4">
     <Link
       to="/plans"
       className="hover:bg-gray-700 px-4 py-2 rounded transition duration-200"
@@ -39,6 +39,7 @@ export default function App() {
     </Link>
   </div>
 </nav>
+
 
       <Routes>
         <Route path="/plans" element={<LearningPlans />} />

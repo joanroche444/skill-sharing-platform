@@ -26,11 +26,12 @@ export default function EditLearningPlan() {
   if (!initialValues) return <div className="p-8">Loading...</div>;
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Edit Learning Plan</h2>
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+    <div className="py-10 bg-gray-100 px-2">
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-1000">Edit Learning Plan</h2>
         <LearningPlanForm onSubmit={handleUpdate} initialValues={initialValues} />
       </div>
     </div>
   );
+  
 }

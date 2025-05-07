@@ -30,36 +30,44 @@ export default function LearningPlans() {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">All Learning Plans</h2>
-      <ul className="space-y-6 flex flex-col items-center">
-        {plans.map(plan => (
-          <li
-            key={plan.id}
-            className="bg-white border border-gray-300 p-6 rounded-lg shadow hover:shadow-lg transition duration-200 w-full max-w-2xl"
+    <div className="p-10 bg-gray-100 min-h-screen">
+  <h2 className="text-4xl font-bold mb-10 text-gray-800 text-center"> All Learning Plans</h2>
+  <ul className="space-y-8 flex flex-col items-center">
+    {plans.map(plan => (
+      <li
+        key={plan.id}
+        className="bg-white border border-gray-200 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-3xl"
+      >
+        <h3 className="text-3xl font-bold text-blue-600 mb-2">{plan.title}</h3>
+        <p className="text-gray-700 text-lg mb-3">{plan.description}</p>
+        
+        <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-5">
+          <span className="bg-blue-50 text-blue-700 font-medium px-3 py-1 rounded-full border border-blue-200">
+            {plan.skill}
+          </span>
+          <span className="bg-green-50 text-green-700 font-medium px-3 py-1 rounded-full border border-green-200">
+            {plan.learningPeriodInDays} days
+          </span>
+        </div>
+
+        <div className="mt-4 flex gap-4">
+          <button
+            onClick={() => handleEdit(plan.id)}
+            className="bg-blue-500 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium shadow-sm transition"
           >
-            <h3 className="text-2xl font-semibold text-blue-700">{plan.title}</h3>
-            <p className="text-gray-600 mt-2">{plan.description}</p>
-            <div className="text-sm text-gray-500 mt-1 italic">
-              {plan.skill} | {plan.learningPeriodInDays} days
-            </div>
-            <div className="mt-4 flex gap-4">
-              <button
-                onClick={() => handleEdit(plan.id)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(plan.id)}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+             Edit
+          </button>
+          <button
+            onClick={() => handleDelete(plan.id)}
+            className="bg-red-500 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-medium shadow-sm transition"
+          >
+             Delete
+          </button>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 }

@@ -45,13 +45,13 @@ import { Link } from 'react-router-dom';
     const newErrors = {};
     
     // First name validation
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
+    if (!formData.firstname.trim()) {
+      newErrors.firstname = 'First name is required';
     }
     
     // Last name validation
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+    if (!formData.lastname.trim()) {
+      newErrors.lastname = 'Last name is required';
     }
     
     // Email validation
@@ -93,26 +93,41 @@ import { Link } from 'react-router-dom';
     }
     
     setIsSubmitting(true);
+
+    const payload = {
+      firstName: formData.firstname,
+      lastName: formData.lastname,
+      email: formData.email,
+      password: formData.password,
+      
+    }
     
     try {
-      console.log('Form submitted successfully', formData);
-      // Here you would typically make an API call to register the user
-      // await registerUser(formData);
-      
-      // Simulate API call delay
-      fetch('http://localhost:8080/api/users/register', {
+
+      const response = await fetch('http://localhost:8081/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
-      })
+        body: JSON.stringify(payload)
+      });
+      //console.log('Form submitted successfully', payload);
+      if (response.status === 409) {
+        setErrors({ submit: 'Email already exists. Please use a different email.' });
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Something went wrong during registration');
+      }
+      
       setTimeout(() => {
         alert('Registration successful! You can now log in.');
         // Reset form or redirect
         setFormData({
-          firstName: '',
-          lastName: '',
+          firstname: '',
+          lastname: '',
           email: '',
           password: '',
           confirmPassword: '',
@@ -216,46 +231,46 @@ import { Link } from 'react-router-dom';
             <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               {/* First Name */}
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
                   First name
                 </label>
                 <div className="mt-1">
                   <input
-                    id="firstName"
-                    name="firstName"
+                    id="firstname"
+                    name="firstname"
                     type="text"
                     autoComplete="given-name"
-                    value={formData.firstName}
+                    value={formData.firstname}
                     onChange={handleChange}
                     className={`appearance-none block w-full px-3 py-2 border ${
-                      errors.firstName ? 'border-red-300' : 'border-gray-300'
+                      errors.firstname ? 'border-red-300' : 'border-gray-300'
                     } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                   />
-                  {errors.firstName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
+                  {errors.firstname && (
+                    <p className="mt-2 text-sm text-red-600">{errors.firstname}</p>
                   )}
                 </div>
               </div>
 
               {/* Last Name */}
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
                   Last name
                 </label>
                 <div className="mt-1">
                   <input
-                    id="lastName"
-                    name="lastName"
+                    id="lastname"
+                    name="lastname"
                     type="text"
                     autoComplete="family-name"
-                    value={formData.lastName}
+                    value={formData.lastname}
                     onChange={handleChange}
                     className={`appearance-none block w-full px-3 py-2 border ${
                       errors.lastName ? 'border-red-300' : 'border-gray-300'
                     } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                   />
-                  {errors.lastName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.lastName}</p>
+                  {errors.lastname && (
+                    <p className="mt-2 text-sm text-red-600">{errors.lastname}</p>
                   )}
                 </div>
               </div>

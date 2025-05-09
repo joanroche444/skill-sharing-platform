@@ -120,6 +120,7 @@ const Page = () => {
             key={post.postid}
             post={post}
             comments={comments}
+            setComments={setComments}
             visibleCommentsPostId={visibleCommentsPostId}
             handleCommentToggle={handleCommentToggle}
           />

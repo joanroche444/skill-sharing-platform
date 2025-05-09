@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Community from './Community'; // Make sure this path matches your file location
-import Page from './Page';
+
+import Page from './CommunityPage';
 // UsersPage component
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -40,13 +40,13 @@ function App() {
         <nav className="mb-6 space-x-4">
           <Link to="/" className="text-purple-600 hover:underline">Home</Link>
           <Link to="/users" className="text-purple-600 hover:underline">Users</Link>
-          <Link to="/page" className="text-purple-600 hover:underline">Community</Link>
+          <Link to="/community" className="text-purple-600 hover:underline">Community</Link>
         </nav>
 
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/users" element={<UsersPage />} />
-          <Route path="/page" element={<Page />} />
+          <Route path="/community" element={<Page />} />
         </Routes>
       </div>
     </Router>

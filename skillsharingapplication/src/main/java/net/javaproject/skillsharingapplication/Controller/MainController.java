@@ -29,13 +29,9 @@ public class MainController {
     private commentRepo commentRepo;
 
     @PostMapping("/addComment")
-    public ResponseEntity<?> addComment(@RequestBody Comment comment) {
-        // Save the comment
+    public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
         Comment savedComment = commentRepo.save(comment);
-
-        // Return success response with the saved comment
-        SuccessResponse successResponse = new SuccessResponse("Thank you! Your comment has been successfully added. 😊", savedComment);
-        return ResponseEntity.ok(successResponse);
+        return ResponseEntity.ok(savedComment);
     }
 
     @GetMapping("/getComment/{id}")
@@ -109,7 +105,7 @@ public ResponseEntity<SuccessResponse> updateComment(@PathVariable String id, @R
     SuccessResponse successResponse = new SuccessResponse("The comment could not be updated, it was not found .", null);
     return ResponseEntity.status(HttpStatus.OK).body(successResponse);
 }
-
+*/
 
 @DeleteMapping("/deleteComment/{id}")
 public ResponseEntity<?> deleteComment(@PathVariable String id) {
@@ -130,7 +126,7 @@ public ResponseEntity<?> deleteComment(@PathVariable String id) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 }
 
-*/
+
 
 
 

@@ -1,4 +1,4 @@
-package net.javaproject.skillsharingapplication.Repository;
+package net.javaproject.skillsharingapplication.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

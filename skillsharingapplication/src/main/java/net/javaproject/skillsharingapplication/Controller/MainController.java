@@ -1,9 +1,10 @@
-package net.javaproject.skillsharingapplication.Controller;
+package net.javaproject.skillsharingapplication.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import net.javaproject.skillsharingapplication.Repository.commentRepo;
 
+import net.javaproject.skillsharingapplication.repository.commentRepo;
 import net.javaproject.skillsharingapplication.model.Comment;
 import net.javaproject.skillsharingapplication.response.ErrorResponse;
 import net.javaproject.skillsharingapplication.response.SuccessResponse;

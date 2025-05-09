@@ -1,4 +1,4 @@
-package net.javaproject.skillsharingapplication.service;
+package net.javaproject.skillsharingapplication.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import net.javaproject.skillsharingapplication.model.User;
-import net.javaproject.skillsharingapplication.repository.UserRepository;
+import net.javaproject.skillsharingapplication.Repository.UserRepository;
 
 
 

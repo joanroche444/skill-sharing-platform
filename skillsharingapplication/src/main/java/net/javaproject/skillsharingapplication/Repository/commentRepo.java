@@ -6,5 +6,4 @@ import net.javaproject.skillsharingapplication.model.Comment;
 
 public interface commentRepo extends MongoRepository<Comment,String> {
     
-
 }

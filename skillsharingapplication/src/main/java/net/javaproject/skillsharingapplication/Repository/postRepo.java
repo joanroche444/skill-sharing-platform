@@ -18,3 +18,4 @@ public interface postRepo extends MongoRepository<Post, String> {
     void deleteById(String postid);
 }
 
+

@@ -1,4 +1,4 @@
-package net.javaproject.skillsharingapplication.repository;
+package net.javaproject.skillsharingapplication.Repository;
 
 import java.util.Optional;
 

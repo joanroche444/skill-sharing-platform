@@ -1,9 +1,8 @@
 package net.javaproject.skillsharingapplication.model;
 
-import java.time.LocalDateTime;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,17 +11,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Post {
 
     @Id
-    private String commentid;
+    private String postid;
 
-    private String postid; // Reference to the Post
-
-    private String name;
+    private String title;
 
     private String description;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
+    private String mediaUrl;  // Link to image or video
+
+    private String mediaType; // "image" or "video"
+
+    private String createdBy; // Username or user id
+
+    private Long createdAt;   // Timestamp
+
 }

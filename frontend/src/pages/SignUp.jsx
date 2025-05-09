@@ -95,12 +95,14 @@ import { Link } from 'react-router-dom';
     setIsSubmitting(true);
 
     const payload = {
-      firstName: formData.firstname,
-      lastName: formData.lastname,
+      firstname: formData.firstname,
+      lastname: formData.lastname,
       email: formData.email,
       password: formData.password,
       
-    }
+    };
+
+    console.log('Form data:', payload);
     
     try {
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Post from "./Post"; // Import the Post component
+import Post from "./Post";
 
-// Helper function to generate random timestamps within the last 7 days
 const getRandomTimestamp = () => {
   const now = Date.now();
   const oneWeekAgo = now - 7 * 24 * 60 * 60 * 1000;
@@ -12,8 +11,8 @@ const Page = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState({});
   const [visibleCommentsPostId, setVisibleCommentsPostId] = useState(null);
-  const [postText, setPostText] = useState(""); // Added state for post text
-  const [postImage, setPostImage] = useState(null); // Added state for post image
+  const [postText, setPostText] = useState("");
+  const [postFile, setPostFile] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:8081/post/all")
@@ -22,7 +21,6 @@ const Page = () => {
         const postsWithExtras = data.map((post) => ({
           ...post,
           createdAt: getRandomTimestamp(),
-          mediaUrl: "https://woz-u.com/wp-content/uploads/2022/02/Coding-Tips-Featured.jpg",
         }));
         setPosts(postsWithExtras);
       })
@@ -31,7 +29,7 @@ const Page = () => {
 
   const handleCommentToggle = (postId) => {
     if (visibleCommentsPostId === postId) {
-      setVisibleCommentsPostId(null); // Hide comments if already open
+      setVisibleCommentsPostId(null);
     } else {
       setVisibleCommentsPostId(postId);
       if (!comments[postId]) {
@@ -58,78 +56,94 @@ const Page = () => {
     }
   };
 
-  // Handle file input for images
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPostImage(imageUrl);
-    }
+  const handleFileChange = (e) => {
+    setPostFile(e.target.files[0]);
   };
 
-  // Handle the post submission
-  const handlePost = () => {
-    // You can send the post data to your server here, or just log it
-    console.log("Post Created:", { postText, postImage });
-    // Clear the form fields after posting
-    setPostText("");
-    setPostImage(null);
-  };
+const handlePost = () => {
+  if (!postFile && !postText.trim()) {
+    alert("Please enter a description or select a file.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("title", "Skill Sharing Post"); // Or use an input field if you want
+  formData.append("description", postText);
+  formData.append("createdBy", "user123"); // Replace with actual user info
+  formData.append("mediaType", postFile?.type.startsWith("video") ? "video" : "image");
+  if (postFile) formData.append("mediaFile", postFile);
+
+  fetch("http://localhost:8081/post/add", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      alert("Post uploaded successfully!");
+      setPosts((prevPosts) => [data, ...prevPosts]);
+      setPostText("");
+      setPostFile(null);
+    })
+    .catch((err) => {
+      console.error("Error posting:", err);
+      alert("An error occurred.");
+    });
+};
+
 
   return (
-    <div className="bg-[#f2f3f4]">
-    <div className="max-w-3xl mx-auto py-10 bg-[#f2f3f4]">
-      <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-        <h2 className="text-xl font-semibold mb-4">Share a Post</h2>
-        <textarea
-          className="w-full border border-gray-300 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
-          rows="4"
-          placeholder="What's on your mind?"
-          value={postText}
-          onChange={(e) => setPostText(e.target.value)} // Handling the text input
-        />
-        <div className="mt-4">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange} // Handling the image input
-            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+    <div className="bg-[#f2f3f4] min-h-screen py-10">
+      <div className="max-w-2xl mx-auto px-4">
+        <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800">Create a Post</h2>
+          <textarea
+            className="w-full border border-gray-300 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-[#1f467d] text-sm"
+            rows="3"
+            placeholder="What's on your mind?"
+            value={postText}
+            onChange={(e) => setPostText(e.target.value)}
           />
-        </div>
-        {postImage && (
-          <div className="mt-4">
-            <img
-              src={postImage}
-              alt="Post Preview"
-              className="max-w-full rounded-lg mb-4"
+          <div className="mt-3">
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#1f467d] file:text-white file:cursor-pointer hover:file:bg-opacity-90 transition"
             />
           </div>
-        )}
-        <div className="mt-4 flex justify-between">
-          <button
-            onClick={handlePost}
-            className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700"
-          >
-            Post
-          </button>
+          {postFile && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600">File selected: {postFile.name}</p>
+            </div>
+          )}
+          <div className="mt-4 text-right">
+            <button
+              onClick={handlePost}
+              className="bg-[#1f467d] text-white py-2 px-5 rounded-lg transition hover:bg-opacity-90"
+            >
+              Post
+            </button>
+          </div>
         </div>
+
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <Post
+              key={post.postid}
+              post={post}
+              comments={comments}
+              visibleCommentsPostId={visibleCommentsPostId}
+              handleCommentToggle={handleCommentToggle}
+            />
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No posts available.</p>
+        )}
       </div>
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <Post
-            key={post.postid}
-            post={post}
-            comments={comments}
-            visibleCommentsPostId={visibleCommentsPostId}
-            handleCommentToggle={handleCommentToggle}
-          />
-        ))
-      ) : (
-        <p>No posts available</p>
-      )}
-    </div>
     </div>
   );
 };
 
 export default Page;
+
+

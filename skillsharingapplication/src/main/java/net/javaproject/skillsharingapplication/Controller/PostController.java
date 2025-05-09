@@ -1,73 +1,67 @@
 package net.javaproject.skillsharingapplication.Controller;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;       // Import PutMapping
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import net.javaproject.skillsharingapplication.Repository.postRepo;
 import net.javaproject.skillsharingapplication.model.Post;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/post")
+@CrossOrigin(origins = "http://localhost:3000") // adjust if frontend is hosted elsewhere
 public class PostController {
 
     @Autowired
-    postRepo PostRepo;
+    private postRepo PostRepo;
 
-    // Add a post
+    private static final String UPLOAD_DIR = "uploads/";
+
     @PostMapping("/add")
-    public void addPost(@RequestBody Post post) {
-        PostRepo.save(post);
+    public ResponseEntity<?> createPost(
+        @RequestParam(value = "description", required = false) String description,
+        @RequestParam(value = "mediaFile", required = false) MultipartFile mediaFile
+    ) {
+        try {
+            Post post = new Post();
+            post.setDescription(description);
+            post.setCreatedAt(System.currentTimeMillis());
+
+            if (mediaFile != null && !mediaFile.isEmpty()) {
+                File uploadDir = new File(UPLOAD_DIR);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+
+                String fileName = UUID.randomUUID().toString() + "_" + mediaFile.getOriginalFilename();
+                File destFile = new File(UPLOAD_DIR + fileName);
+                mediaFile.transferTo(destFile);
+
+                String mediaUrl = "/uploads/" + fileName;
+                String mediaType = mediaFile.getContentType().startsWith("video") ? "video" : "image";
+
+                post.setMediaUrl(mediaUrl);
+                post.setMediaType(mediaType);
+            }
+
+            Post savedPost = PostRepo.save(post);
+            return ResponseEntity.ok(savedPost);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("message", "Failed to save post."));
+        }
     }
 
-    // Get post by ID
-    @GetMapping("/{postid}")
-    public Post getPostById(@PathVariable String postid) {
-        return PostRepo.findById(postid)
-                       .orElseThrow(() -> new RuntimeException("Post not found"));
-    }
-
-    // Get all posts
     @GetMapping("/all")
     public List<Post> getAllPosts() {
         return PostRepo.findAll();
     }
-
-    // Update a post
-    @PutMapping("/update/{postid}")
-    public Post updatePost(@PathVariable String postid, @RequestBody Post updatedPost) {
-        Post post = PostRepo.findById(postid)
-                            .orElseThrow(() -> new RuntimeException("Post not found"));
-
-        post.setTitle(updatedPost.getTitle());
-        post.setDescription(updatedPost.getDescription());
-        post.setMediaUrl(updatedPost.getMediaUrl());
-        post.setMediaType(updatedPost.getMediaType());
-        post.setCreatedBy(updatedPost.getCreatedBy());
-        post.setCreatedAt(updatedPost.getCreatedAt());
-
-        return PostRepo.save(post);
-    }
-
-    // Delete post by ID
-    @DeleteMapping("/delete/{postid}")
-    public void deletePost(@PathVariable String postid) {
-        Post post = PostRepo.findById(postid)
-                            .orElseThrow(() -> new RuntimeException("Post not found"));
-
-        PostRepo.deleteById(postid);
-    }
-
 }
-
 
 
 

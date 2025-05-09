@@ -20,14 +20,14 @@ public class Post {
 
     private String description;
 
-    private String mediaUrl;  // Link to image or video
+    private String mediaUrl;
 
-    private String mediaType; // "image" or "video"
+    private String mediaType;
 
-    private String createdBy; // Username or user id
+    private String createdBy;
 
-    private Long createdAt;   // Timestamp
-
-
+    private Long createdAt;
 }
+
+
 

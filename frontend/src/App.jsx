@@ -40,7 +40,7 @@ function App() {
         <nav className="mb-6 space-x-4">
           <Link to="/" className="text-purple-600 hover:underline">Home</Link>
           <Link to="/users" className="text-purple-600 hover:underline">Users</Link>
-          <Link to="/community" className="text-purple-600 hover:underline">Community</Link>
+          <Link to="/page" className="text-purple-600 hover:underline">Community</Link>
         </nav>
 
         <Routes>

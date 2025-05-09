@@ -1,6 +1,6 @@
 package net.javaproject.skillsharingapplication.Service;
 
-import net.javaproject.skillsharingapplication.Repository.CommentRepo;
+import net.javaproject.skillsharingapplication.Repository.commentRepo;
 import net.javaproject.skillsharingapplication.model.Comment;
 import net.javaproject.skillsharingapplication.response.ErrorResponse;
 import net.javaproject.skillsharingapplication.response.SuccessResponse;
@@ -15,17 +15,17 @@ import java.util.Optional;
 public class CommentService {
 
     @Autowired
-    private CommentRepo commentRepo;
+    private commentRepo commentRepos;
 
     // Add a new comment
     public SuccessResponse addComment(Comment comment) {
-        Comment savedComment = commentRepo.save(comment);
+        Comment savedComment = commentRepos.save(comment);
         return new SuccessResponse("Thank you! Your comment has been successfully added. 😊", savedComment);
     }
 
     // Get a comment by ID
     public Object getCommentById(String id) {
-        Optional<Comment> comment = commentRepo.findById(id);
+        Optional<Comment> comment = commentRepos.findById(id);
         if (comment.isPresent()) {
             return comment.get();
         } else {
@@ -35,7 +35,7 @@ public class CommentService {
 
     // Get all comments
     public Object getAllComments() {
-        List<Comment> comments = commentRepo.findAll();
+        List<Comment> comments = commentRepos.findAll();
         if (comments.isEmpty()) {
             return new ErrorResponse("No comments found");
         }
@@ -44,13 +44,13 @@ public class CommentService {
 
     // Update an existing comment
     public SuccessResponse updateComment(String id, Comment updatedComment) {
-        Optional<Comment> existingCommentOpt = commentRepo.findById(id);
+        Optional<Comment> existingCommentOpt = commentRepos.findById(id);
         if (existingCommentOpt.isPresent()) {
             Comment existingComment = existingCommentOpt.get();
             existingComment.setPostno(updatedComment.getPostno());
             existingComment.setName(updatedComment.getName());
             existingComment.setDescription(updatedComment.getDescription());
-            Comment savedComment = commentRepo.save(existingComment);
+            Comment savedComment = commentRepos.save(existingComment);
             return new SuccessResponse("Thank you! Your comment has been successfully updated. 😊", savedComment);
         } else {
             return new SuccessResponse("The comment could not be updated, it was not found 😞.", null);
@@ -59,10 +59,10 @@ public class CommentService {
 
     // Delete a comment
     public Object deleteComment(String id) {
-        Optional<Comment> existingCommentOpt = commentRepo.findById(id);
+        Optional<Comment> existingCommentOpt = commentRepos.findById(id);
         if (existingCommentOpt.isPresent()) {
             Comment existingComment = existingCommentOpt.get();
-            commentRepo.delete(existingComment);
+            commentRepos.delete(existingComment);
             return new SuccessResponse("Your comment has been successfully deleted. 😊", null);
         } else {
             return new ErrorResponse("Comment with ID " + id + " not found 😞.");

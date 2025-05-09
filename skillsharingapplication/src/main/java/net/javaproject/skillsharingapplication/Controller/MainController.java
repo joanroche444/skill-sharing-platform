@@ -2,7 +2,7 @@ package net.javaproject.skillsharingapplication.Controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import net.javaproject.skillsharingapplication.Repository.CommentRepo;
+import net.javaproject.skillsharingapplication.Repository.commentRepo;
 
 import net.javaproject.skillsharingapplication.model.Comment;
 import net.javaproject.skillsharingapplication.response.ErrorResponse;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class MainController {
 
     @Autowired
-    private CommentRepo commentRepo;
+    private commentRepo commentRepo;
 
     @PostMapping("/addComment")
     public ResponseEntity<?> addComment(@RequestBody Comment comment) {

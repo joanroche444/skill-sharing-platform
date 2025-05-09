@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import net.javaproject.skillsharingapplication.model.Comment;
 
-public interface CommentRepo extends MongoRepository<Comment,String> {
+public interface commentRepo extends MongoRepository<Comment,String> {
     
 
 }

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Community from './Community'; // Make sure this path matches your file location
-
+import Page from './Page';
 // UsersPage component
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -46,7 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/users" element={<UsersPage />} />
-          <Route path="/community" element={<Community />} />
+          <Route path="/page" element={<Page />} />
         </Routes>
       </div>
     </Router>

@@ -1,60 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Page from "./Page"; // Make sure path is correct
 
-// Single Post Component
-const Post = ({ post }) => {
-  return (
-    <div className="bg-white p-6 rounded-xl shadow-md mb-6">
-      <div className="flex items-center mb-4">
-        <img
-          className="w-12 h-12 rounded-full mr-3"
-          src={post.user.avatar}
-          alt={post.user.name}
-        />
-        <div>
-          <p className="font-semibold text-sm">{post.user.name}</p>
-          <p className="text-xs text-gray-500">{post.time}</p>
-        </div>
-      </div>
-      <p className="mb-3 text-sm">{post.text}</p>
-      {post.image && (
-        <img className="w-full rounded-lg mb-4" src={post.image} alt="Post" />
-      )}
-      <div className="flex items-center space-x-6 text-sm text-gray-500">
-        <button className="flex items-center space-x-1 hover:text-blue-600">
-          <span>👍</span>
-          <span>{post.likes} Likes</span>
-        </button>
-        <button className="flex items-center space-x-1 hover:text-blue-600">
-          <span>💬</span>
-          <span>{post.comments.length} Comments</span>
-        </button>
-        <button className="flex items-center space-x-1 hover:text-blue-600">
-          <span>🔄</span>
-          <span>Share</span>
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// CommunityPage Component
 const Community = () => {
   const [postText, setPostText] = useState("");
   const [postImage, setPostImage] = useState(null);
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      user: { name: "Jane Doe", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
-      time: "2 hours ago",
-      text: "Sharing my latest tech blog on React and Tailwind CSS. Check it out!",
-      image: "https://via.placeholder.com/600x300?text=React+and+Tailwind+Blog",
-      likes: 35,
-      comments: [
-        { id: 1, author: "Alex", text: "Great post!" },
-        { id: 2, author: "Sam", text: "Thanks for sharing!" }
-      ],
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+  const [activePostId, setActivePostId] = useState(null);
+  const [commentsByPostId, setCommentsByPostId] = useState({});
+
+  const placeholderAvatar = "https://randomuser.me/api/portraits/lego/1.jpg";
+  const placeholderMediaImage = "https://via.placeholder.com/600x300?text=Google+Image";
+
+  useEffect(() => {
+    fetch("http://localhost:8081/all")
+      .then((res) => res.json())
+      .then((data) => {
+        const backendPosts = data.map((p) => ({
+          id: p.postid,
+          user: { name: p.createdBy || "Anonymous", avatar: placeholderAvatar },
+          time: new Date(p.createdAt).toLocaleString(),
+          text: p.description,
+          image: p.mediaUrl ? placeholderMediaImage : null,
+          likes: 0,
+          comments: [], // initial empty
+        }));
+        setPosts(backendPosts);
+      })
+      .catch((err) => console.error("Error fetching posts:", err));
+  }, []);
 
   const handlePost = () => {
     if (!postText.trim()) return;
@@ -79,6 +52,27 @@ const Community = () => {
       reader.onloadend = () => setPostImage(reader.result);
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleCommentClick = async (postId) => {
+    if (activePostId === postId) {
+      setActivePostId(null); // collapse if already open
+      return;
+    }
+
+    if (!commentsByPostId[postId]) {
+      try {
+        const res = await fetch(`http://localhost:8081/getCommentsByPostId/${postId}`);
+        const data = await res.json();
+        setCommentsByPostId((prev) => ({
+          ...prev,
+          [postId]: data,
+        }));
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    }
+    setActivePostId(postId);
   };
 
   return (
@@ -120,12 +114,13 @@ const Community = () => {
         </div>
       </div>
 
-      {/* Feed of Posts */}
-      <div>
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
+      {/* All Posts via Page */}
+      <Page
+        posts={posts}
+        onCommentClick={handleCommentClick}
+        activePostId={activePostId}
+        commentsByPostId={commentsByPostId}
+      />
     </div>
   );
 };

@@ -41,7 +41,7 @@ public class CommentService {
         }
         return comments;
     }
-
+/* 
     // Update an existing comment
     public SuccessResponse updateComment(String id, Comment updatedComment) {
         Optional<Comment> existingCommentOpt = commentRepos.findById(id);
@@ -67,5 +67,5 @@ public class CommentService {
         } else {
             return new ErrorResponse("Comment with ID " + id + " not found 😞.");
         }
-    }
+    } */
 }

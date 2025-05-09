@@ -69,9 +69,20 @@ public ResponseEntity<?> getAllComments() {
     return ResponseEntity.ok(successResponse);
 }
 
+@GetMapping("/getCommentsByPostId/{postid}")
+public ResponseEntity<?> getCommentsByPostId(@PathVariable String postid) {
+    List<Comment> comments = commentRepo.findByPostid(postid);
+    
+    if (comments.isEmpty()) {
+        ErrorResponse errorResponse = new ErrorResponse("No comments found for post ID " + postid + " 😞");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 
+    SuccessResponse successResponse = new SuccessResponse("Here are the comments for post ID " + postid + " 😊", comments);
+    return ResponseEntity.ok(successResponse);
+}
 
-
+/* 
 @PutMapping("/updateComment/{id}")
 public ResponseEntity<SuccessResponse> updateComment(@PathVariable String id, @RequestBody Comment comment) {
     // Look for the comment by its ID directly
@@ -119,8 +130,7 @@ public ResponseEntity<?> deleteComment(@PathVariable String id) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 }
 
-
-
+*/
 
 
 

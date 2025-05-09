@@ -65,4 +65,13 @@ public class PostController {
 
         PostRepo.deleteById(postid);
     }
+
 }
+
+
+
+
+
+
+
+

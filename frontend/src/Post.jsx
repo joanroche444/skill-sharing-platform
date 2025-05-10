@@ -1,7 +1,7 @@
 import React from "react";
 import CommentSection from "./CommentSection";
 
-const Post = ({ post, comments, visibleCommentsPostId, handleCommentToggle }) => {
+const Post = ({ post, comments, visibleCommentsPostId, handleCommentToggle, handleCommentDelete }) => {
   const user = post.createdBy || "Unknown User";
   const isCommentsVisible = visibleCommentsPostId === post.postid;
 
@@ -48,7 +48,11 @@ const Post = ({ post, comments, visibleCommentsPostId, handleCommentToggle }) =>
       </div>
 
       {isCommentsVisible && (
-        <CommentSection postId={post.postid} comments={comments} />
+        <CommentSection 
+          postId={post.postid} 
+          comments={comments} 
+          handleCommentDelete={handleCommentDelete}
+        />
       )}
     </div>
   );

@@ -6,14 +6,16 @@ const CommentSection = ({ postId, comments, setComments }) => {
   const [commentText, setCommentText] = useState("");
   const [posting, setPosting] = useState(false);
 
-  const handlePostComment = async () => {
-    if (!commentText.trim()) return;
+  console.log("setComments in CommentSection:", setComments);
 
-    setPosting(true);
+  const handlePostComment = async () => {
+    if (!commentText.trim()) return; // Don't post empty comments
+
+    setPosting(true); // Set posting state to true to disable button while posting
 
     const newComment = {
       postid: postId,
-      name: "User",
+      name: "User", // You can replace this with actual user data if needed
       description: commentText,
       createdDate: new Date().toISOString(),
     };
@@ -38,15 +40,15 @@ const CommentSection = ({ postId, comments, setComments }) => {
           console.warn("Unexpected response format:", response);
         }
 
-        setCommentText("");
-        setShowCommentBox(false);
+        setCommentText(""); // Clear the input box after posting
+        setShowCommentBox(false); // Hide comment box after posting
       } else {
         alert("Failed to post comment.");
       }
     } catch (error) {
       console.error("Error posting comment:", error);
     } finally {
-      setPosting(false);
+      setPosting(false); // Set posting to false once posting is done
     }
   };
 
@@ -56,23 +58,37 @@ const CommentSection = ({ postId, comments, setComments }) => {
       return;
     }
 
-    console.log("Deleting comment with ID:", commentId); // Log the ID to ensure it's correct
+    const confirmed = window.confirm("Are you sure you want to delete this comment?");
+    if (!confirmed) return; // If user cancels deletion, do nothing
+
+    // Optimistically update the state to remove the comment before the API call
+    const updatedComments = comments[postId].filter((comment) => comment.commentid !== commentId);
+    setComments((prev) => ({
+        
+      ...prev,
+      [postId]: updatedComments,
+    }));
 
     try {
       const res = await fetch(`http://localhost:8081/deleteComment/${commentId}`, {
         method: "DELETE",
       });
 
-      if (res.ok) {
+      if (!res.ok) {
+        alert("Failed to delete comment.");
+        // If the deletion fails, we revert the optimistic update by adding the comment back
         setComments((prev) => ({
           ...prev,
-          [postId]: prev[postId].filter((comment) => comment.commentid !== commentId),
+          [postId]: [...prev[postId], { commentid: commentId, description: "Deleted comment" }],
         }));
-      } else {
-        alert("Failed to delete comment.");
       }
     } catch (error) {
       console.error("Error deleting comment:", error);
+      // Rollback the optimistic update in case of an error
+      setComments((prev) => ({
+        ...prev,
+        [postId]: [...prev[postId], { commentid: commentId, description: "Error deleting comment" }],
+      }));
     }
   };
 
@@ -110,37 +126,33 @@ const CommentSection = ({ postId, comments, setComments }) => {
 
       {Array.isArray(comments[postId]) ? (
         comments[postId].length > 0 ? (
-          comments[postId].map((comment, idx) => {
-            if (!comment || typeof comment !== "object") return null;
-
-            return (
-              <div
-                key={comment.commentid || idx} // Ensure unique key using commentid or idx
-                className="mb-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/45.jpg"
-                      alt={comment.name}
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    <p className="font-semibold text-sm">{comment.name}</p>
-                  </div>
-                  <button
-                    onClick={() => handleDeleteComment(comment.commentid)} // Pass the comment ID
-                    className="text-[#1f467d] hover:text-red-700"
-                  >
-                    <FaTrashAlt />
-                  </button>
+          comments[postId].map((comment) => (
+            <div
+              key={comment.commentid} // Ensure the key is unique
+              className="mb-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/45.jpg"
+                    alt={comment.name}
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                  <p className="font-semibold text-sm">{comment.name}</p>
                 </div>
-                <p className="text-sm text-gray-700">{comment.description}</p>
-                <p className="text-xs text-gray-400 mt-2">
-                  {new Date(comment.createdDate).toLocaleString()}
-                </p>
+                <button
+                  onClick={() => handleDeleteComment(comment.commentid)} // Pass the comment ID
+                  className="text-[#1f467d] hover:text-red-700"
+                >
+                  <FaTrashAlt />
+                </button>
               </div>
-            );
-          })
+              <p className="text-sm text-gray-700">{comment.description}</p>
+              <p className="text-xs text-gray-400 mt-2">
+                {new Date(comment.createdDate).toLocaleString()}
+              </p>
+            </div>
+          ))
         ) : (
           <p className="text-sm text-gray-500">No comments yet.</p>
         )

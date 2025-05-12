@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from 'react';
-
+import React from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/LoginPage";
 function App() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:8081/api/users')
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error fetching users:', error));
-  }, []);
+  
 
   return (
-    <div>
-      <h2>Users</h2>
-      <ul>
-        {users.map(user => (
-          <li key={user.id}>{user.firstname}</li>
-        ))}
-      </ul>
-    </div>
+   <Router>
+    <Routes>
+      <Route path="/" element={<HomePage/>} />
+      <Route path="/signup" element={<SignUp/>} />
+      <Route path="/login" element={<Login/>} />
+    </Routes>
+   </Router>
   );
 }
 

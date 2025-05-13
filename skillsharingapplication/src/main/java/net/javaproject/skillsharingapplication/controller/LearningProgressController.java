@@ -37,4 +37,10 @@ public class LearningProgressController {
     public List<LearningProgress> getProgressByLearningPlan(@PathVariable String learningPlanId) {
         return learningProgressRepository.findByLearningPlanId(learningPlanId);
     }
+
+    // ✅ Delete a progress update by ID
+    @DeleteMapping("/{id}")
+    public void deleteProgressUpdate(@PathVariable String id) {
+        learningProgressRepository.deleteById(id);
+    }
 }

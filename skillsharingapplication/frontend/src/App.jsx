@@ -42,6 +42,7 @@ export default function App() {
 
 
       <Routes>
+        <Route path="/" element={<LearningPlans />} />
         <Route path="/plans" element={<LearningPlans />} />
         <Route path="/create-plan" element={<CreatePlan />} />
         <Route path="/create-progress" element={<CreateProgressUpdate />} />

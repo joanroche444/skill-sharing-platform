@@ -28,7 +28,7 @@ export default function EditLearningPlan() {
   return (
     <div className="py-10 bg-gray-100 px-2">
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-1000">Edit Learning Plan</h2>
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">Edit Learning Plan</h2>
         <LearningPlanForm onSubmit={handleUpdate} initialValues={initialValues} />
       </div>
     </div>

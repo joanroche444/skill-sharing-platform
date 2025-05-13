@@ -38,8 +38,8 @@ export default function LearningPlans() {
         key={plan.id}
         className="bg-white border border-gray-200 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-3xl"
       >
-        <h3 className="text-3xl font-bold text-blue-400 mb-2">{plan.title}</h3>
-        <p className="text-gray-700 text-lg mb-3">{plan.description}</p>
+        <h3 className="text-2xl font-bold text-blue-400 mb-2">{plan.title}</h3>
+        <p className="text-gray-500 text-lg mb-3">{plan.description}</p>
         
         <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-5">
           <span className="bg-blue-50 text-blue-700 font-medium px-3 py-1 rounded-full border border-blue-200">

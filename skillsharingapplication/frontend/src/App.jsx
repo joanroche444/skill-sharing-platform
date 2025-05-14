@@ -8,6 +8,7 @@ import CreateProgressUpdate from './pages/CreateProgressUpdate';
 import ProgressUpdates from './pages/ProgressUpdates';
 import { ToastContainer } from 'react-toastify';
 import NavBar from './components/Navbar';
+import Footer from './components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 
@@ -27,6 +28,7 @@ export default function App() {
       </Routes>
 
       <ToastContainer />
+      <Footer/>
     </Router>
   );
 }

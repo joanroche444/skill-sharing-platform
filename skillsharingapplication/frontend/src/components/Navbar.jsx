@@ -1,4 +1,3 @@
-// src/components/NavBar.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { UserCircle } from "lucide-react";
@@ -20,23 +19,26 @@ export default function NavBar() {
   );
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex flex-col md:flex-row justify-between items-center sticky top-0 z-50">
-      <div className="flex items-left mb-2 md:mb-0">
-        <Link to="/home" className="text-3xl font-bold text-blue-600">
-          SkillShare
-        </Link>
-      </div>
+    <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+      {/* Left: Logo */}
+      <Link to="/home" className="text-3xl font-bold text-blue-600">
+        TalentHive
+      </Link>
 
-      <div className="flex flex-wrap justify-left md:justify-end items-center gap-4">
+      {/* Center: Nav Links */}
+      <div className="flex gap-4 justify-center flex-1">
         {navLink("/home", "Home")}
         {navLink("/create-post", "Create Post")}
         {navLink("/plans", "Learning Plans")}
         {navLink("/create-plan", "Create Plan")}
         {navLink("/progress", "Progress Updates")}
-        {navLink("/create-progress", "Update Progress")}
-        {navLink("/notifications", "Notifications")}
+        {navLink("/create-progress", "New Progress Update")}
+      </div>
+
+      {/* Right: Profile Icon */}
+      <div className="ml-auto">
         <Link to="/profile" className="text-gray-700 hover:text-blue-600">
-          <UserCircle size={24} />
+          <UserCircle size={30} />
         </Link>
       </div>
     </nav>

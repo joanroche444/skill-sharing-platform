@@ -17,5 +17,8 @@ public interface postRepo extends MongoRepository<Post, String> {
     // Delete post by ID
     void deleteById(String postid);
 
+    // Save or create a post (inherited from MongoRepository)
+    // Post save(Post post); // No need to add explicitly — already available
 }
+
 

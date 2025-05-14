@@ -35,11 +35,18 @@ public class PostController {
                        .orElseThrow(() -> new RuntimeException("Post not found"));
     }
 
+    @GetMapping("/search/createdBy/{name}")
+public List<Post> searchPostsByCreatedBy(@PathVariable String name) {
+    return PostRepo.findByCreatedByIgnoreCase(name);
+}
+
     // Get all posts
     @GetMapping("/all")
     public List<Post> getAllPosts() {
         return PostRepo.findAll();
     }
+
+    
 
     // Update a post
     @PutMapping("/update/{postid}")

@@ -16,4 +16,7 @@ public interface postRepo extends MongoRepository<Post, String> {
 
     // Delete post by ID
     void deleteById(String postid);
+
+    List<Post> findByTitleContainingIgnoreCase(String title);       // Search by title (partial match)
+    List<Post> findByCreatedByIgnoreCase(String createdBy);
 }

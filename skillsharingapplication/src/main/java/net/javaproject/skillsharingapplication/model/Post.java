@@ -28,4 +28,6 @@ public class Post {
 
     private Long createdAt;   // Timestamp
 
+    private Number likes;
+
 }

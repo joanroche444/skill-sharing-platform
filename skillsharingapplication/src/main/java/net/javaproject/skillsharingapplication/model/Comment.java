@@ -18,7 +18,7 @@ public class Comment {
     private String commentid;
 
     private String postid; // Reference to the Post
-
+    private String userid;
     private String name;
 
     private String description;

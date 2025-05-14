@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Heart, MoreVertical } from 'lucide-react';
+import { FaCommentAlt, FaTrashAlt, FaEdit } from "react-icons/fa";
+import { Heart } from 'lucide-react';
+
 
 
 // CSS animation for toast
@@ -55,182 +57,15 @@ const Toast = ({ message, type, onClose }) => {
   );
 };
 
-// Comment Section Component
-const CommentSection = ({ postId, comments, handleAddComment, handleCommentDelete, handleCommentEdit }) => {
-  const [newCommentText, setNewCommentText] = useState(""); // For adding new comments
-  const [editingCommentId, setEditingCommentId] = useState(null); // For tracking which comment is being edited
-  const [editingText, setEditingText] = useState(""); // For storing the current editing text
-  const [openDropdownId, setOpenDropdownId] = useState(null); // Track which dropdown is currently open
-  const currentUserId = "68242d782c31f279cc1a36b2"; // Static user ID for the current user
-
-  const handlePostComment = async () => {
-    if (!newCommentText.trim()) return;
-    await handleAddComment(postId, newCommentText.trim());
-    setNewCommentText("");
-  };
-
-  const handleSaveEdit = async (commentId) => {
-    if (editingText.trim()) {
-      await handleCommentEdit(postId, commentId, editingText.trim());
-      setEditingCommentId(null);
-      setEditingText("");
-    }
-  };
-  
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handlePostComment();
-    }
-  };
-  
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setOpenDropdownId(null);
-    };
-    
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
-  // Toggle dropdown menu for a specific comment
-  const toggleDropdown = (e, commentId) => {
-    e.stopPropagation(); // Prevent the document click event from immediately closing it
-    setOpenDropdownId(openDropdownId === commentId ? null : commentId);
-  };
-
-  return (
-    <div className="mt-6">
-      {/* New Comment Input */}
-      <div className="flex items-center border border-gray-200 rounded-full px-4 py-2 shadow-sm mb-6">
-        <input
-          type="text"
-          placeholder="Add a comment..."
-          className="flex-grow outline-none text-sm bg-transparent placeholder-gray-400"
-          value={newCommentText}
-          onChange={(e) => setNewCommentText(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <button
-          onClick={handlePostComment}
-          className={`ml-3 text-sm font-medium ${newCommentText.trim() ? "text-purple-600" : "text-gray-300 cursor-default"}`}
-          disabled={!newCommentText.trim()}
-        >
-          Post
-        </button>
-      </div>
-
-      {/* Comments List */}
-      <div className="space-y-5">
-        {comments.map((comment) => (
-          <div key={comment.commentid} className="flex items-start space-x-4 p-4 bg-blue-50 rounded-xl shadow-sm">
-            <img
-              src="https://randomuser.me/api/portraits/women/44.jpg"
-              alt="avatar"
-              className="w-9 h-9 rounded-full object-cover"
-            />
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">{comment.name || "User"}</p>
-                  <p className="text-xs text-gray-400">{new Date(comment.createdDate).toLocaleDateString()}</p>
-                </div>
-                {/* Only show dropdown for comments by current user */}
-                {comment.userid === currentUserId && (
-                  <div className="relative">
-                    <button
-                      onClick={(e) => toggleDropdown(e, comment.commentid)}
-                      className="text-gray-400 hover:text-gray-700 transition p-1"
-                    >
-                      <MoreVertical size={16} />
-                    </button>
-                    
-                    {/* Dropdown Menu */}
-                    {openDropdownId === comment.commentid && (
-                      <div className="absolute right-0 mt-1 w-36 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                        <ul className="py-1">
-                          <li>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setEditingCommentId(comment.commentid);
-                                setEditingText(comment.description);
-                                setOpenDropdownId(null);
-                              }}
-                              className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"
-                            >
-                              <span className="mr-2">✏️</span> Edit
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleCommentDelete(postId, comment.commentid);
-                                setOpenDropdownId(null);
-                              }}
-                              className="px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left flex items-center"
-                            >
-                              <span className="mr-2">🗑️</span> Delete
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {editingCommentId === comment.commentid ? (
-                <div className="mt-2">
-                  <textarea
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent resize-none"
-                    value={editingText}
-                    onChange={(e) => setEditingText(e.target.value)}
-                  />
-                  <div className="flex space-x-2 mt-2">
-                    <button
-                      onClick={() => handleSaveEdit(comment.commentid)}
-                      className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEditingCommentId(null);
-                        setEditingText("");
-                      }}
-                      className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-sm text-gray-700 mt-2">{comment.description}</p>
-              )}
-
-              <p className="text-xs text-gray-500 mt-1">{new Date(comment.createdDate).toLocaleString()}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const Page = () => {
+const Community = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState({});
   const [visibleCommentsPostId, setVisibleCommentsPostId] = useState(null);
   const [postText, setPostText] = useState("");
   const [postImage, setPostImage] = useState(null);
   const [toast, setToast] = useState(null);
-  const [likedPosts, setLikedPosts] = useState({}); // Track which posts are liked
-  const [likeCounts, setLikeCounts] = useState({}); // Track like counts separately
+  const [likedPosts, setLikedPosts] = useState({});
+const [likeCounts, setLikeCounts] = useState({});
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
@@ -239,7 +74,6 @@ const Page = () => {
   const hideToast = () => {
     setToast(null);
   };
-  
   const fetchPosts = () => {
     fetch("http://localhost:8081/post/all")
       .then((res) => res.json())
@@ -254,42 +88,39 @@ const Page = () => {
         
         setPosts(postsWithExtras);
   
-        // Initialize like counts from fetched posts, but only if not already set
-        setLikeCounts(prevCounts => {
-          const initialLikeCounts = {...prevCounts};
-          postsWithExtras.forEach((post) => {
-            // Only set if not already tracked
-            if (initialLikeCounts[post.postid] === undefined) {
-              initialLikeCounts[post.postid] = post.likeCount; 
-            }
-          });
-          return initialLikeCounts;
+        // Also initialize the like counts state
+        const initialLikeCounts = {};
+        postsWithExtras.forEach((post) => {
+          initialLikeCounts[post.postid] = post.likeCount; // Set initial likes from fetched posts
         });
+        setLikeCounts(initialLikeCounts); // Store the like counts in state
       })
       .catch((err) => console.error("Error fetching posts:", err));
   };
   
+  
+
   useEffect(() => {
     fetchPosts();
   }, []);
 
   const handleLikeToggle = (postId) => {
-    const wasLiked = likedPosts[postId];
-    const nowLiked = !wasLiked;
+    setLikedPosts((prevLikedPosts) => {
+      // Toggle the like status for the current post
+      const newLikedPosts = { ...prevLikedPosts, [postId]: !prevLikedPosts[postId] };
   
-    setLikedPosts(prev => ({
-      ...prev,
-      [postId]: nowLiked
-    }));
+      // Update the like count based on the toggle status
+      setLikeCounts((prevLikeCounts) => {
+        const currentLikes = prevLikeCounts[postId] || 0;
+        const updatedLikeCount = newLikedPosts[postId] ? currentLikes + 1 : currentLikes - 1;
   
-    setLikeCounts(prevCounts => ({
-      ...prevCounts,
-      [postId]: (prevCounts[postId] || 0) + (nowLiked ? 1 : -1)
-    }));
+        return { ...prevLikeCounts, [postId]: updatedLikeCount };
+      });
   
-    // Optional: Update backend like count
-    // fetch(`http://localhost:8081/post/${postId}/like`, { method: 'POST' });
+      return newLikedPosts; // Return the updated likedPosts state
+    });
   };
+  
   
 
   const handleCommentToggle = (postId) => {
@@ -364,7 +195,6 @@ const Page = () => {
     const tempComment = {
       commentid: `temp-${Date.now()}`, // Temporary ID that will be replaced
       postid: postId,
-      userid: "68242d782c31f279cc1a36b2", // Add the current user ID
       name: "User",
       description: commentText,
       createdDate: new Date().toISOString(),
@@ -382,7 +212,6 @@ const Page = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           postid: postId,
-          userid: "68242d782c31f279cc1a36b2", // Include user ID
           name: "User",
           description: commentText,
           createdDate: new Date().toISOString(),
@@ -397,6 +226,7 @@ const Page = () => {
         // Refresh comments to ensure UI matches server state
         fetchCommentsForPost(postId);
       } else {
+
         console.error("Server rejected the update");
         showToast("Failed to update comment", "error");
         // If server update fails, re-fetch to restore correct state
@@ -437,6 +267,7 @@ const Page = () => {
           // Refresh comments to ensure UI matches server state
           fetchCommentsForPost(postId);
         } else {
+
           console.error("Server rejected the update");
           showToast("Failed to update comment", "error");
           // If server update fails, re-fetch to restore correct state
@@ -531,14 +362,14 @@ const Page = () => {
 
                 <div className="flex items-center space-x-6 text-sm text-gray-500">
                 <button
-                  className={`flex items-center space-x-1 ${
-                    likedPosts[post.postid] ? "text-red-500" : "text-gray-500"
-                  } hover:text-red-600`}
-                  onClick={() => handleLikeToggle(post.postid)}
-                >
-                  <span>{likedPosts[post.postid] ? "❤️" : "🤍"}</span>
-                  <span>{likeCounts[post.postid] || 0} Like{(likeCounts[post.postid] || 0) !== 1 ? "s" : ""}</span>
-                </button>
+  className={`flex items-center space-x-1 ${
+    likedPosts[post.postid] ? "text-red-500" : "text-gray-500"
+  } hover:text-red-600`}
+  onClick={() => handleLikeToggle(post.postid)}
+>
+  <span>{likedPosts[post.postid] ? "❤️" : "🤍"}</span>
+  <span>{likeCounts[post.postid] || 0} Like{(likeCounts[post.postid] || 0) !== 1 ? "s" : ""}</span>
+</button>
                   
                   <button
                     className="flex items-center space-x-1 hover:text-blue-600"
@@ -549,7 +380,7 @@ const Page = () => {
                   </button>
                   <button className="flex items-center space-x-1 hover:text-blue-600">
                     <span>🔄</span>
-                    <span>share</span>
+                    <span>Share</span>
                   </button>
                 </div>
 
@@ -573,4 +404,123 @@ const Page = () => {
   );
 };
 
-export default Page;
+const CommentSection = ({ postId, comments, handleAddComment, handleCommentDelete, handleCommentEdit }) => {
+  const [newCommentText, setNewCommentText] = useState(""); // For adding new comments
+  const [editingCommentId, setEditingCommentId] = useState(null); // For tracking which comment is being edited
+  const [editingText, setEditingText] = useState(""); // For storing the current editing text
+
+  const handlePostComment = async () => {
+    if (!newCommentText.trim()) return;
+    await handleAddComment(postId, newCommentText.trim());
+    setNewCommentText("");
+  };
+
+  const handleSaveEdit = async (commentId) => {
+    if (editingText.trim()) {
+      await handleCommentEdit(postId, commentId, editingText.trim());
+      setEditingCommentId(null);
+      setEditingText("");
+    }
+  };
+  
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handlePostComment();
+    }
+  };
+
+  return (
+    <div className="mt-6">
+      {/* New Comment Input */}
+      <div className="flex items-center border border-gray-200 rounded-full px-4 py-2 shadow-sm mb-6">
+        <input
+          type="text"
+          placeholder="Add a comment..."
+          className="flex-grow outline-none text-sm bg-transparent placeholder-gray-400"
+          value={newCommentText}
+          onChange={(e) => setNewCommentText(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
+        <button
+          onClick={handlePostComment}
+          className={`ml-3 text-sm font-medium ${newCommentText.trim() ? "text-purple-600" : "text-gray-300 cursor-default"}`}
+          disabled={!newCommentText.trim()}
+        >
+          Post
+        </button>
+      </div>
+
+      {/* Comments List */}
+      <div className="space-y-5">
+        {comments.map((comment) => (
+          <div key={comment.commentid} className="flex items-start space-x-4 p-4 bg-blue-50 rounded-xl shadow-sm">
+            <img
+              src="https://randomuser.me/api/portraits/women/44.jpg"
+              alt="avatar"
+              className="w-9 h-9 rounded-full object-cover"
+            />
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">{comment.name || "User"}</p>
+                  <p className="text-xs text-gray-400">{new Date(comment.createdDate).toLocaleDateString()}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      setEditingCommentId(comment.commentid);
+                      setEditingText(comment.description);
+                    }}
+                    className="text-gray-400 hover:text-blue-500 transition"
+                  >
+                    <FaEdit className="text-lg" />
+                  </button>
+                  <button
+                    onClick={() => handleCommentDelete(postId, comment.commentid)}
+                    className="text-gray-400 hover:text-red-500 transition"
+                  >
+                    <FaTrashAlt className="text-lg" />
+                  </button>
+                </div>
+              </div>
+
+              {editingCommentId === comment.commentid ? (
+                <div className="mt-2">
+                  <textarea
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent resize-none"
+                    value={editingText}
+                    onChange={(e) => setEditingText(e.target.value)}
+                  />
+                  <div className="flex space-x-2 mt-2">
+                    <button
+                      onClick={() => handleSaveEdit(comment.commentid)}
+                      className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingCommentId(null);
+                        setEditingText("");
+                      }}
+                      className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-700 mt-2">{comment.description}</p>
+              )}
+
+              <p className="text-xs text-gray-500 mt-1">{new Date(comment.createdDate).toLocaleString()}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Community;

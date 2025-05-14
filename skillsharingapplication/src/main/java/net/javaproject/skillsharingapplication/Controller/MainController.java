@@ -65,6 +65,8 @@ public ResponseEntity<?> getAllComments() {
     SuccessResponse successResponse = new SuccessResponse("Here are all the comments 😊", comments);
     return ResponseEntity.ok(successResponse);
 }
+ 
+
 
 @GetMapping("/getCommentsByPostId/{postid}")
 public ResponseEntity<?> getCommentsByPostId(@PathVariable String postid) {

@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-
+import { Provider } from 'react-redux';
 import Page from './CommunityPage';
+import store from './redux/store';
 // UsersPage component
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -34,22 +35,28 @@ const HomePage = () => (
 );
 
 function App() {
+  
   return (
+    <Provider store={store}>
     <Router>
       <div className="p-6">
         <nav className="mb-6 space-x-4">
           <Link to="/" className="text-purple-600 hover:underline">Home</Link>
           <Link to="/users" className="text-purple-600 hover:underline">Users</Link>
           <Link to="/community" className="text-purple-600 hover:underline">Community</Link>
+          <Link to="/mycomms" className="text-purple-600 hover:underline">My posts </Link>
+         
         </nav>
 
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/community" element={<Page />} />
+          
         </Routes>
       </div>
     </Router>
+    </Provider>
   );
 }
 

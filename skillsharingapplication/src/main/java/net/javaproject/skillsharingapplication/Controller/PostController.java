@@ -57,6 +57,8 @@ public class PostController {
         return PostRepo.save(post);
     }
 
+    
+     
     // Delete post by ID
     @DeleteMapping("/delete/{postid}")
     public void deletePost(@PathVariable String postid) {

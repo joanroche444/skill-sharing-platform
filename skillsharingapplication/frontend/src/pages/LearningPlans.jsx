@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api/api';
+import api from '../api/api'; // Your API instance
 
 export default function LearningPlans() {
   const [plans, setPlans] = useState([]);
@@ -108,7 +108,6 @@ export default function LearningPlans() {
                 <span className="bg-green-100 text-green-700 font-medium px-4 py-1 rounded-full border border-green-200">
                   {plan.learningPeriodInDays} days
                 </span>
-                
               </div>
 
               <div className="flex gap-4 mt-6">

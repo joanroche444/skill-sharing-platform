@@ -9,6 +9,7 @@ import net.javaproject.skillsharingapplication.model.Comment;
 import net.javaproject.skillsharingapplication.response.ErrorResponse;
 import net.javaproject.skillsharingapplication.response.SuccessResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,34 +79,34 @@ public ResponseEntity<?> getCommentsByPostId(@PathVariable String postid) {
     return ResponseEntity.ok(successResponse);
 }
 
-/* 
+
 @PutMapping("/updateComment/{id}")
-public ResponseEntity<SuccessResponse> updateComment(@PathVariable String id, @RequestBody Comment comment) {
-    // Look for the comment by its ID directly
-    Comment existingComment = commentRepo.findById(id).orElse(null);
+    public ResponseEntity<SuccessResponse> updateComment(@PathVariable String id, @RequestBody Comment comment) {
+        // Look for the comment by its ID
+        Comment existingComment = commentRepo.findById(id).orElse(null);
 
-    // If the comment exists, update it and save
-    if (existingComment != null) {
-        // Update fields
-        existingComment.setPostno(comment.getPostno());
-        existingComment.setName(comment.getName());
-        existingComment.setDescription(comment.getDescription());
+        // If the comment exists, update description, name, and createdDate
+        if (existingComment != null) {
+            // Update the description, name, and set the current date and time
+            existingComment.setDescription(comment.getDescription());
+            existingComment.setName(comment.getName());
+            existingComment.setCreatedDate(LocalDateTime.now()); // Update the time to the current time
 
-        // Save the updated comment
-        Comment updatedComment = commentRepo.save(existingComment);
+            // Save the updated comment
+            Comment updatedComment = commentRepo.save(existingComment);
 
-        // Create a success response message
-        SuccessResponse successResponse = new SuccessResponse("Thank you! Your comment has been successfully updated. 😊", updatedComment);
+            // Create a success response message
+            SuccessResponse successResponse = new SuccessResponse("Thank you! Your comment has been successfully updated. 😊", updatedComment);
 
-        // Return the success response with 200 OK and the updated comment
-        return ResponseEntity.ok(successResponse);
+            // Return the success response with 200 OK and the updated comment
+            return ResponseEntity.ok(successResponse);
+        }
+
+        // If the comment is not found, return a response indicating that the comment could not be updated
+        SuccessResponse successResponse = new SuccessResponse("The comment could not be updated, it was not found.", null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(successResponse);
     }
 
-    // If comment is not found, return a success message
-    SuccessResponse successResponse = new SuccessResponse("The comment could not be updated, it was not found .", null);
-    return ResponseEntity.status(HttpStatus.OK).body(successResponse);
-}
-*/
 
 @DeleteMapping("/deleteComment/{id}")
 public ResponseEntity<?> deleteComment(@PathVariable String id) {

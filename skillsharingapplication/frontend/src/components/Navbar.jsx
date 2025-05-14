@@ -19,7 +19,7 @@ export default function NavBar() {
   );
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+    <nav className="bg-gray-200 shadow-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
       {/* Left: Logo */}
       <Link to="/home" className="text-3xl font-bold text-blue-600">
         TalentHive

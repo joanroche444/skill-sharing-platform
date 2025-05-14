@@ -47,7 +47,7 @@ export default function HomePage() {
         <h1 className="text-4xl font-bold mb-3">Welcome to TalentHive</h1>
         <p className="text-lg mb-6">Elevate your skills with personalized learning plans</p>
         <Button
-  className="bg-blue-700 hover:bg-black-50 font-semibold px-8 py-4 rounded-full shadow-md"
+  className="bg-blue-700 text-gray-500 hover:bg-gray-400 font-semibold px-8 py-4 rounded-full shadow-md"
   onClick={() => navigate("/create-plan")}
 >
   + Create Your Own Plan
@@ -64,7 +64,7 @@ export default function HomePage() {
 
         {/* Learning Plans Section */}
         <section>
-          <h2 className="text-2xl font-bold mb-6 text-center">Explore Top Skill Learning Plans</h2>
+          <h2 className="text-2xl text-gray-500 font-bold mb-6 text-center">Explore Top Skill Learning Plans</h2>
           {plans.length > 0 ? (
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
               {plans.map((plan) => (

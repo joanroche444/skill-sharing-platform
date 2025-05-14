@@ -21,56 +21,62 @@ export default function LearningPlanForm({ onSubmit, initialValues = {} }) {
   };
 
   return (
-    <div className="py-10 flex justify-center bg-gray-400 px-7">
-
+    <div className="py-10 flex justify-center bg-gray-200 px-7 animate-fadeIn">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-6 w-full max-w-xl space-y-5"
+        className="bg-white shadow-xl rounded-lg p-8 w-full max-w-xl space-y-6 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
       >
-        
 
-        <input
-          className="border border-gray-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+        <div className="space-y-4">
+          {/* Title Input */}
+          <input
+            className="border border-gray-300 p-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105"
+            placeholder="Enter Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
 
-        <textarea
-          className="border border-gray-300 p-3 w-full rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Description"
-          rows="4"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+          {/* Description Textarea */}
+          <textarea
+            className="border border-gray-300 p-4 w-full rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105"
+            placeholder="Enter Description"
+            rows="4"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
 
-        <input
-          className="border border-gray-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Skill"
-          value={skill}
-          onChange={(e) => setSkill(e.target.value)}
-        />
+          {/* Skill Input */}
+          <input
+            className="border border-gray-300 p-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105"
+            placeholder="Skill"
+            value={skill}
+            onChange={(e) => setSkill(e.target.value)}
+          />
 
-        <input
-          className="border border-gray-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Tags (comma-separated)"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-        />
+          {/* Tags Input */}
+          <input
+            className="border border-gray-300 p-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105"
+            placeholder="Tags (comma-separated)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
 
-        <input
-          type="number"
-          className="border border-gray-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Learning period (days)"
-          value={learningPeriodInDays}
-          onChange={(e) => setLearningPeriodInDays(e.target.value)}
-        />
+          {/* Learning Period Input */}
+          <input
+            type="number"
+            className="border border-gray-300 p-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105"
+            placeholder="Learning Period (in days)"
+            value={learningPeriodInDays}
+            onChange={(e) => setLearningPeriodInDays(e.target.value)}
+          />
+        </div>
 
-        <div className="text-center pt-4">
+        {/* Submit Button */}
+        <div className="text-center pt-6">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             Save Plan
           </button>

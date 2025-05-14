@@ -44,19 +44,21 @@ export default function CreateProgressUpdate() {
   };
 
   return (
-    <div className=" min-h-screen py-10 flex justify-center px-7">
-      <div className="w-full max-w-xl">
-        <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">Post Progress Update</h2>
-        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full space-y-5">
+    <div className="min-h-screen py-12 px-4 flex justify-center bg-gray-100">
+      <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl">
+        <h2 className="text-3xl font-bold text-center text-gray-700 mb-8"> Post Progress Update</h2>
 
-          {/* Learning Plan Select */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          {/* Plan Select */}
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Learning Plan</label>
             <select
               value={selectedPlan}
               onChange={(e) => setSelectedPlan(e.target.value)}
-              className={`border p-3 w-full rounded focus:outline-none focus:ring-2 ${
-                errors.selectedPlan ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-blue-400'
-              }`}
+              className={`w-full p-3 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 ${
+                errors.selectedPlan ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-blue-500'
+              } hover:scale-[1.02]`}
             >
               <option value="">Select Learning Plan</option>
               {plans.map((plan) => (
@@ -70,12 +72,13 @@ export default function CreateProgressUpdate() {
 
           {/* Template Select */}
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Progress Template</label>
             <select
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className={`border p-3 w-full rounded focus:outline-none focus:ring-2 ${
-                errors.title ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-blue-400'
-              }`}
+              className={`w-full p-3 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 ${
+                errors.title ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-blue-500'
+              } hover:scale-[1.02]`}
             >
               <option value="">Select Template</option>
               <option value="Completed Tutorial">Completed Tutorial</option>
@@ -87,25 +90,26 @@ export default function CreateProgressUpdate() {
 
           {/* Description */}
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`border p-3 w-full rounded resize-none focus:outline-none focus:ring-2 ${
-                errors.description ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-blue-400'
-              }`}
-              rows="4"
+              className={`w-full p-4 rounded-lg border resize-none transition-all duration-300 focus:outline-none focus:ring-2 ${
+                errors.description ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-blue-500'
+              } hover:scale-[1.02]`}
+              rows="5"
               placeholder="Describe your progress..."
             />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <div className="text-center pt-4">
             <button
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition"
               type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
             >
-              Submit Update
+               Submit Update
             </button>
           </div>
         </form>

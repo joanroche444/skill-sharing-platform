@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const generatePostId = () => {
   return Math.random().toString(36).substring(2, 10);
@@ -18,6 +18,8 @@ const AddPostForm = () => {
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedFileName, setSelectedFileName] = useState('');
+  const videoRef = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,14 +29,47 @@ const AddPostForm = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setSelectedFileName(file.name);
+
+    if (formData.mediaType === 'video') {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        const duration = video.duration;
+        if (duration > 30) {
+          setErrorMessage('⚠️ Video must be 30 seconds or less.');
+          setSelectedFileName('');
+        } else {
+          setErrorMessage('');
+        }
+      };
+      video.src = URL.createObjectURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.mediaType === 'video' && selectedFileName === '') {
+      setErrorMessage('⚠️ Please select a valid video (≤ 30s).');
+      return;
+    }
 
     const generatedPost = {
       ...formData,
       postid: generatePostId(),
       createdBy: 'james_smith',
       createdAt: Date.now(),
+      mediaUrl:
+        formData.mediaType === 'video'
+          ? 'https://videos.pexels.com/video-files/31969982/13622711_1920_1080_30fps.mp4'
+          : 'https://www.learning.com/wp-content/uploads/2023/11/GettyImages-1425235236.jpg',
     };
 
     try {
@@ -62,6 +97,7 @@ const AddPostForm = () => {
         createdAt: '',
         likes: 0,
       });
+      setSelectedFileName('');
     } catch (error) {
       setErrorMessage(error.message);
       setSuccessMessage('');
@@ -103,15 +139,18 @@ const AddPostForm = () => {
           className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none"
         />
 
+        {/* File input */}
         <input
-          type="text"
-          name="mediaUrl"
-          placeholder="Media URL (e.g., https://...)"
-          value={formData.mediaUrl}
-          onChange={handleChange}
-          className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          type="file"
+          accept={formData.mediaType === 'image' ? 'image/*' : 'video/*'}
+          onChange={handleFileChange}
+          className="w-full px-4 py-3 border border-blue-200 rounded-xl bg-white"
         />
+        {selectedFileName && (
+          <p className="text-sm text-gray-500">📁 Selected: {selectedFileName}</p>
+        )}
 
+        {/* Media type */}
         <select
           name="mediaType"
           value={formData.mediaType}
@@ -121,8 +160,6 @@ const AddPostForm = () => {
           <option value="image">🖼️ Image</option>
           <option value="video">🎥 Video</option>
         </select>
-
-        
 
         <button
           type="submit"

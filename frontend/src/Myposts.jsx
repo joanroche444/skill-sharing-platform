@@ -177,7 +177,7 @@ const Myposts = () => {
 
                   <h3 className="text-xl font-semibold mt-4 text-blue-800">{post.title}</h3>
                   <p className="text-gray-600 mt-2">{post.description}</p>
-                  <p className="text-sm text-gray-400 mt-2">Likes: {post.likes}</p>
+                  
                   <p className="text-sm text-gray-400">Posted by: {post.createdBy}</p>
 
                   <div className="mt-4 flex justify-between items-center">

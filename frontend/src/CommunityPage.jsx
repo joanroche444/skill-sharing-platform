@@ -602,33 +602,13 @@ const Page = () => {
       <div className="max-w-3xl mx-auto py-10 px-4 pt-20">
         {/* Create Post */}
         <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">Share a Post</h2>
-          <textarea
-            className="w-full border border-gray-300 rounded-lg p-3"
-            rows="4"
-            placeholder="What's on your mind?"
-            value={postText}
-            onChange={(e) => setPostText(e.target.value)}
-          />
-          <div className="mt-4">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-          </div>
-          {postImage && (
-            <div className="mt-4">
-              <img src={postImage} alt="Preview" className="max-w-full rounded-lg mb-4" />
-            </div>
-          )}
-          <button
-            onClick={handlePost}
-            className="bg-[#1f467d] text-white py-2 px-4 rounded-lg hover:bg-purple-700 mt-4"
-          >
-            Post
-          </button>
+          <h2 className="text-xl font-semibold mb-4">Share a Post to update us on you journey!!</h2>
+          <p className="text-[#1f467d] text-center text-lg italic mt-4 px-4 py-3 bg-[#e1ecff] rounded-lg shadow-sm">
+      ✨ Welcome to the community of Talent Hive, where you can share your journey, shine bright, and inspire others! 🚀💖
+    </p>
+          
+          
+          
         </div>
 
         {/* Display Posts */}

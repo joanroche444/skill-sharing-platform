@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Heart, MoreVertical } from 'lucide-react';
-
+import { Heart, MoreVertical, Bookmark } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { bookmarkPost, removeBookmark } from './redux/actions/bookmarkActions';
 
 // CSS animation for toast
 const toastAnimationStyle = `
@@ -222,6 +223,91 @@ const CommentSection = ({ postId, comments, handleAddComment, handleCommentDelet
   );
 };
 
+// Bookmarks tab component
+const BookmarksTab = ({ showBookmarks, setShowBookmarks }) => {
+  const bookmarkedPosts = useSelector(state => state.bookmarks.bookmarkedPosts);
+  const dispatch = useDispatch();
+  
+  const handleRemoveBookmark = (postId) => {
+    dispatch(removeBookmark(postId));
+  };
+  
+  if (!showBookmarks) return null;
+  
+  return (
+
+<div className="fixed inset-0 z-50 bg-gradient-to-br from-[#e8f0fe] to-[#f0f4ff] backdrop-blur-md flex flex-col">
+  {/* Header */}
+  <div className="flex items-center justify-between px-8 py-6 border-b border-white/40 bg-white/30 backdrop-blur-xl shadow-sm">
+    <h2 className="text-2xl font-semibold text-[#1a3b5d] tracking-tight">📚 My Bookmarks</h2>
+    <button
+      onClick={() => setShowBookmarks(false)}
+      className="text-[#1a3b5d] hover:text-red-400 text-3xl font-light transition duration-200"
+      aria-label="Close"
+    >
+      &times;
+    </button>
+  </div>
+
+  {/* Content */}
+  <div className="flex-1 overflow-y-auto px-8 py-6">
+    {bookmarkedPosts.length > 0 ? (
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {bookmarkedPosts.map((post) => (
+          <div
+            key={post.postid}
+            className="bg-white/60 backdrop-blur-lg border border-white/30 rounded-2xl p-5 shadow-xl hover:shadow-2xl transition duration-300"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex items-center gap-3">
+                
+                <span className="text-sm font-medium text-gray-800">
+                  {post.createdBy || "Anonymous"}
+                </span>
+              </div>
+              <button
+                onClick={() => handleRemoveBookmark(post.postid)}
+                className="text-blue-500 hover:text-blue-700 transition"
+                title="Remove bookmark"
+              >
+                <Bookmark size={18} fill="currentColor" />
+              </button>
+            </div>
+
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{post.title}</h3>
+            <p className="text-sm text-gray-600 line-clamp-3">{post.description}</p>
+
+            {post.mediaUrl && (
+              <img
+                src={post.mediaUrl}
+                alt="Post"
+                className="w-full h-40 object-cover rounded-xl mt-4 border border-white/60"
+              />
+            )}
+
+            <p className="text-xs text-gray-500 mt-4">
+              Bookmarked on {new Date().toLocaleDateString()}
+            </p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="flex flex-col items-center justify-center h-full text-gray-500 text-center">
+        <div className="bg-white/60 p-10 rounded-2xl shadow-md backdrop-blur-xl border border-white/30">
+          <Bookmark size={48} className="mx-auto mb-4 text-blue-500" />
+          <p className="text-lg font-semibold text-gray-700">No bookmarks yet</p>
+          <p className="text-sm mt-1 text-gray-500">Start saving posts to see them here</p>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+   
+
+  );
+};
+
 const Page = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState({});
@@ -231,6 +317,11 @@ const Page = () => {
   const [toast, setToast] = useState(null);
   const [likedPosts, setLikedPosts] = useState({}); // Track which posts are liked
   const [likeCounts, setLikeCounts] = useState({}); // Track like counts separately
+  const [showBookmarks, setShowBookmarks] = useState(false); // Control bookmarks sidebar visibility
+  
+  // Get bookmark state from Redux
+  const bookmarkedPosts = useSelector(state => state.bookmarks.bookmarkedPosts);
+  const dispatch = useDispatch();
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
@@ -291,6 +382,20 @@ const Page = () => {
     // fetch(`http://localhost:8081/post/${postId}/like`, { method: 'POST' });
   };
   
+  // Handle bookmark toggle
+  const handleBookmarkToggle = (post) => {
+    const isBookmarked = bookmarkedPosts.some(bookmarkedPost => 
+      bookmarkedPost.postid === post.postid
+    );
+    
+    if (isBookmarked) {
+      dispatch(removeBookmark(post.postid));
+      showToast("Post removed from bookmarks");
+    } else {
+      dispatch(bookmarkPost(post));
+      showToast("Post added to bookmarks");
+    }
+  };
 
   const handleCommentToggle = (postId) => {
     if (visibleCommentsPostId === postId) {
@@ -342,7 +447,6 @@ const Page = () => {
     try {
       const res = await fetch(`http://localhost:8081/deleteComment/${commentId}`, { method: "DELETE" });
       const data = await res.json();
-      console.log(data)
       if (data) {
         showToast("Comment deleted successfully!");
       } else {
@@ -429,7 +533,6 @@ const Page = () => {
         });
         
         const data = await res.json();
-        console.log(data)
         if (data) {
           
           // Show success toast
@@ -473,7 +576,30 @@ const Page = () => {
           onClose={hideToast} 
         />
       )}
-      <div className="max-w-3xl mx-auto py-10">
+      
+      {/* Fixed Header with Bookmark Button */}
+      <header className="bg-white shadow-sm fixed top-0 left-0 right-0 z-10">
+        <div className="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="text-xl font-bold text-[#1f467d]">Social App</div>
+          <button 
+            onClick={() => setShowBookmarks(true)}
+            className="flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-[#1f467d] hover:bg-blue-100"
+          >
+            <Bookmark size={18} />
+            <span className="hidden sm:inline">Bookmarks</span>
+            {bookmarkedPosts.length > 0 && (
+              <span className="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {bookmarkedPosts.length}
+              </span>
+            )}
+          </button>
+        </div>
+      </header>
+      
+      {/* Bookmarks Sidebar */}
+      <BookmarksTab showBookmarks={showBookmarks} setShowBookmarks={setShowBookmarks} />
+      
+      <div className="max-w-3xl mx-auto py-10 px-4 pt-20">
         {/* Create Post */}
         <div className="bg-white p-6 rounded-xl shadow-md mb-8">
           <h2 className="text-xl font-semibold mb-4">Share a Post</h2>
@@ -489,7 +615,7 @@ const Page = () => {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-purple-700 hover:file:bg-purple-100"
+              className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             />
           </div>
           {postImage && (
@@ -509,6 +635,10 @@ const Page = () => {
         {posts.length > 0 ? (
           posts.map((post) => {
             const isCommentsVisible = visibleCommentsPostId === post.postid;
+            const isBookmarked = bookmarkedPosts.some(bookmarkedPost => 
+              bookmarkedPost.postid === post.postid
+            );
+            
             return (
               <div key={post.postid} className="bg-white p-6 rounded-xl shadow-md mb-6">
                 <div className="flex items-center mb-4">
@@ -529,27 +659,41 @@ const Page = () => {
                 <p className="mb-3 text-sm">{post.description}</p>
                 <img src={post.mediaUrl} className="w-full rounded-lg mb-4" alt="Post" />
 
-                <div className="flex items-center space-x-6 text-sm text-gray-500">
-                <button
-                  className={`flex items-center space-x-1 ${
-                    likedPosts[post.postid] ? "text-red-500" : "text-gray-500"
-                  } hover:text-red-600`}
-                  onClick={() => handleLikeToggle(post.postid)}
-                >
-                  <span>{likedPosts[post.postid] ? "❤️" : "🤍"}</span>
-                  <span>{likeCounts[post.postid] || 0} Like{(likeCounts[post.postid] || 0) !== 1 ? "s" : ""}</span>
-                </button>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center space-x-6">
+                    <button
+                      className={`flex items-center space-x-1 ${
+                        likedPosts[post.postid] ? "text-red-500" : "text-gray-500"
+                      } hover:text-red-600`}
+                      onClick={() => handleLikeToggle(post.postid)}
+                    >
+                      <span>{likedPosts[post.postid] ? "❤️" : "🤍"}</span>
+                      <span>{likeCounts[post.postid] || 0} Like{(likeCounts[post.postid] || 0) !== 1 ? "s" : ""}</span>
+                    </button>
+                    
+                    <button
+                      className="flex items-center space-x-1 hover:text-blue-600"
+                      onClick={() => handleCommentToggle(post.postid)}
+                    >
+                      <span>💬</span>
+                      <span>{isCommentsVisible ? "Hide Comments" : "View Comments"}</span>
+                    </button>
+                    
+                    <button className="flex items-center space-x-1 hover:text-blue-600">
+                      <span>🔄</span>
+                      <span>Share</span>
+                    </button>
+                  </div>
                   
+                  {/* Bookmark Button */}
                   <button
-                    className="flex items-center space-x-1 hover:text-blue-600"
-                    onClick={() => handleCommentToggle(post.postid)}
+                    onClick={() => handleBookmarkToggle(post)}
+                    className={`flex items-center space-x-1 ${
+                      isBookmarked ? "text-blue-600" : "text-gray-500"
+                    } hover:text-blue-700`}
+                    title={isBookmarked ? "Remove bookmark" : "Bookmark this post"}
                   >
-                    <span>💬</span>
-                    <span>{isCommentsVisible ? "Hide Comments" : "View Comments"}</span>
-                  </button>
-                  <button className="flex items-center space-x-1 hover:text-blue-600">
-                    <span>🔄</span>
-                    <span>share</span>
+                    <Bookmark size={18} fill={isBookmarked ? "currentColor" : "none"} />
                   </button>
                 </div>
 
@@ -572,5 +716,4 @@ const Page = () => {
     </div>
   );
 };
-
 export default Page;

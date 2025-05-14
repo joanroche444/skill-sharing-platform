@@ -28,10 +28,10 @@ export default function NavBar() {
       {/* Center: Nav Links */}
       <div className="flex gap-4 justify-center flex-1">
         {navLink("/home", "Home")}
-        {navLink("/create-post", "Create Post")}
+        {navLink("/create-post", "Your Posts")}
         {navLink("/plans", "Learning Plans")}
-        {navLink("/create-plan", "Create Plan")}
-        {navLink("/progress", "Progress Updates")}
+        {navLink("/create-plan", "Create Learning Plan")}
+        {navLink("/progress", "Learning Progress Updates")}
         {navLink("/create-progress", "New Progress Update")}
       </div>
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-200 text-gray-500 text-center shadow-md px-6 py-4 sticky top-0 z-50">
+        <footer className="bg-gray-200 text-gray-600 text-center shadow-inner px-6 py-4 w-full mt-auto">
             <div className="max-w-screen-xl mx-auto px-4">
                 <p>&copy; {new Date().getFullYear()} TalentHive. All rights reserved.</p>
                 <ul className="flex justify-center text-gray-500 space-x-6 mt-3">

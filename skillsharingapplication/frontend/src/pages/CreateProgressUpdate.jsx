@@ -44,7 +44,7 @@ export default function CreateProgressUpdate() {
   };
 
   return (
-    <div className="py-10 flex justify-center px-7">
+    <div className=" min-h-screen py-10 flex justify-center px-7">
       <div className="w-full max-w-xl">
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">Post Progress Update</h2>
         <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full space-y-5">

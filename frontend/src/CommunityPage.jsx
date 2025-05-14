@@ -339,7 +339,7 @@ const Page = () => {
         const postsWithExtras = data.map((post) => ({
           ...post,
           createdAt: getRandomTimestamp(),
-          mediaUrl: "https://woz-u.com/wp-content/uploads/2022/02/Coding-Tips-Featured.jpg",
+          
           likeCount: Math.floor(Math.random() * 10), // Adding random like count
         }));
         

@@ -1,12 +1,12 @@
 package net.javaproject.skillsharingapplication.model;
 
-import java.time.LocalDateTime;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Document
 @Data
 @NoArgsConstructor
@@ -20,13 +20,14 @@ public class Post {
 
     private String description;
 
-    // URL pointing to the uploaded image or video
-    private String mediaUrl;
+    private String mediaUrl;  // Link to image or video
 
-    // Media type like "image/jpeg", "video/mp4"
-    private String mediaType;
+    private String mediaType; // "image" or "video"
 
-    private String createdBy;
+    private String createdBy; // Username or user id
 
-    private Long createdAt;
+    private Long createdAt;   // Timestamp
+
+    private Number likes;
+
 }

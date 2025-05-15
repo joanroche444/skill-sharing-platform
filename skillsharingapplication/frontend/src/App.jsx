@@ -32,7 +32,7 @@ export default function App() {
           <Route path="/edit-plan/:id" element={<Layout><EditLearningPlan /></Layout>} />
         </Routes>
 
-        <Footer />
+        
         <ToastContainer /> {/* For toast notifications */}
       </Router>
     

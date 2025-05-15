@@ -46,14 +46,14 @@ const Header = ({ isAuthenticated, user, handleLogout }) => {
               <span className="ml-1 text-xs bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded-md">BETA</span>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link to="/" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                Home
+              <Link to="/community" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Community
               </Link>
-              <Link to="/explore" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                Explore
+              <Link to="/myposts" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                My posts
               </Link>
-              <Link to="/learning-plans" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                Learning Plans
+              <Link to="/addpost" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Create posts
               </Link>
             </div>
           </div>
@@ -165,25 +165,25 @@ const Header = ({ isAuthenticated, user, handleLogout }) => {
         <div className="sm:hidden">
           <div className="pt-2 pb-3 space-y-1">
             <Link
-              to="/"
+              to="/community"
               className="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
-              Home
+              Community
             </Link>
             <Link
-              to="/explore"
+              to="/myposts"
               className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
-              Explore
+              My posts
             </Link>
             <Link
-              to="/learning-plans"
+              to="/addposts"
               className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
-              Learning Plans
+              create posts
             </Link>
             
             {!isAuthenticated && (

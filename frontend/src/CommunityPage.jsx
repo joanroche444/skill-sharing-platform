@@ -279,12 +279,22 @@ const BookmarksTab = ({ showBookmarks, setShowBookmarks }) => {
             <p className="text-sm text-gray-600 line-clamp-3">{post.description}</p>
 
             {post.mediaUrl && (
-              <img
-                src={post.mediaUrl}
-                alt="Post"
-                className="w-full h-40 object-cover rounded-xl mt-4 border border-white/60"
-              />
-            )}
+  post.mediaType === 'video' ? (
+    <video
+      controls
+      className="w-full h-40 object-cover rounded-xl mt-4 border border-white/60"
+    >
+      <source src={post.mediaUrl} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  ) : (
+    <img
+      src={post.mediaUrl}
+      alt="Post"
+      className="w-full h-40 object-cover rounded-xl mt-4 border border-white/60"
+    />
+  )
+)}
 
             <p className="text-xs text-gray-500 mt-4">
               Bookmarked on {new Date().toLocaleDateString()}
@@ -643,7 +653,23 @@ const Page = () => {
 
                 <h2 className="font-semibold text-lg">{post.title}</h2>
                 <p className="mb-3 text-sm">{post.description}</p>
-                <img src={post.mediaUrl} className="w-full rounded-lg mb-4" alt="Post" />
+                {post.mediaUrl && (
+  post.mediaType === 'video' ? (
+    <video
+      controls
+      className="w-full rounded-lg mb-4"
+    >
+      <source src={post.mediaUrl} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  ) : (
+    <img
+      src={post.mediaUrl}
+      className="w-full rounded-lg mb-4"
+      alt="Post"
+    />
+  )
+)}
 
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <div className="flex items-center space-x-6">

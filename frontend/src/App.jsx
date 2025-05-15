@@ -5,6 +5,7 @@ import Page from './CommunityPage';
 import store from './redux/store';
 import AddPostForm from './Addpost';
 import Myposts from './Myposts';
+import Home from './Home';
 // UsersPage component
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -48,12 +49,12 @@ function App() {
           <Link to="/community" className="text-purple-600 hover:underline">Community</Link>
           <Link to="/myposts" className="text-purple-600 hover:underline">My posts </Link>
           <Link to="/addpost" className="text-purple-600 hover:underline">Create post </Link>
-          <Link to="/addpost" className="text-purple-600 hover:underline">My comments</Link>
+          
          
         </nav>
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Home />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/community" element={<Page />} />
           <Route path="/addpost" element={<AddPostForm />} />

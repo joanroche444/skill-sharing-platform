@@ -48,6 +48,7 @@ function App() {
           <Link to="/community" className="text-purple-600 hover:underline">Community</Link>
           <Link to="/myposts" className="text-purple-600 hover:underline">My posts </Link>
           <Link to="/addpost" className="text-purple-600 hover:underline">Create post </Link>
+          <Link to="/addpost" className="text-purple-600 hover:underline">My comments</Link>
          
         </nav>
 

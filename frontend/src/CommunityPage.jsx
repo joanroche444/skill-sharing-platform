@@ -3,6 +3,7 @@ import { Heart, MoreVertical, Bookmark } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { bookmarkPost, removeBookmark } from './redux/actions/bookmarkActions';
 
+
 // CSS animation for toast
 const toastAnimationStyle = `
 @keyframes fadeInUp {
@@ -469,7 +470,7 @@ const Page = () => {
       commentid: `temp-${Date.now()}`, // Temporary ID that will be replaced
       postid: postId,
       userid: "68242d782c31f279cc1a36b2", // Add the current user ID
-      name: "User",
+      name: "james_smith",
       description: commentText,
       createdDate: new Date().toISOString(),
     };
@@ -487,7 +488,7 @@ const Page = () => {
         body: JSON.stringify({
           postid: postId,
           userid: "68242d782c31f279cc1a36b2", // Include user ID
-          name: "User",
+          name: "james_smith",
           description: commentText,
           createdDate: new Date().toISOString(),
         }),
@@ -567,7 +568,10 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-[#f2f3f4]">
+    
+
+    
+    <div className="bg-[#f9fafc]">
       <style>{toastAnimationStyle}</style>
       {toast && (
         <Toast 
@@ -576,11 +580,13 @@ const Page = () => {
           onClose={hideToast} 
         />
       )}
+
+      
       
       {/* Fixed Header with Bookmark Button */}
       <header className="bg-white shadow-sm fixed top-0 left-0 right-0 z-10">
         <div className="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="text-xl font-bold text-[#1f467d]">Social App</div>
+          <div className="text-xl font-bold text-[#1f467d]">Talent Hive Community💜</div>
           <button 
             onClick={() => setShowBookmarks(true)}
             className="flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-[#1f467d] hover:bg-blue-100"
@@ -659,10 +665,7 @@ const Page = () => {
                       <span>{isCommentsVisible ? "Hide Comments" : "View Comments"}</span>
                     </button>
                     
-                    <button className="flex items-center space-x-1 hover:text-blue-600">
-                      <span>🔄</span>
-                      <span>Share</span>
-                    </button>
+                    
                   </div>
                   
                   {/* Bookmark Button */}
@@ -694,6 +697,7 @@ const Page = () => {
         )}
       </div>
     </div>
+    
   );
 };
 export default Page;
